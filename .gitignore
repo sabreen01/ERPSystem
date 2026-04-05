@@ -1,0 +1,25 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Rider / IntelliJ specific
+.idea/
+*.sln.iml
+*.riderModule.iml
+_ReSharper.Caches/
+
+# NuGet Packages
+packages/
+*.nuget.props
+*.nuget.targets
+
+# OS specific (Mac)
+.DS_Store
+Thumbs.db
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
