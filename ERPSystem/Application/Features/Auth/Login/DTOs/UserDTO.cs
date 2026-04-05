@@ -1,0 +1,8 @@
+namespace ERPSystem.Application.Features.Auth.Login.DTOs;
+
+public class UserDTO
+{
+    public string Email { get; set; }
+    public string Password { get; set; }
+    
+}
