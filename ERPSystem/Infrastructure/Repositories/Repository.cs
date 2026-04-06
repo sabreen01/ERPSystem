@@ -50,5 +50,10 @@ public class Repository<T>(AppDBContext _context) : IRepository<T>
         _context.Set<T>().Update(entity);
      
     }
+
+    public  Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return _context.SaveChangesAsync(cancellationToken);
+    }
 }
 

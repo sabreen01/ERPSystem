@@ -3,6 +3,7 @@ using ERPSystem.Infrastructure.IocExtension;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDatabaseExtension(builder.Configuration);
+builder.Services.UseService(builder.Configuration);
 builder.Services.AddMediatR(config => 
     config.RegisterServicesFromAssembly(typeof(Program).Assembly));
 

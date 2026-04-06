@@ -1,5 +1,7 @@
-namespace ERPSystem.Domain.Entities.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace ERPSystem.Domain.Entities.Identity;
+[Table(name : "AccessToken" , Schema = "Identity")]
 public class AccessToken : BaseEntity
 {
     public string Token { get; set; }

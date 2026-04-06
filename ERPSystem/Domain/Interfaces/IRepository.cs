@@ -10,5 +10,6 @@ public interface IRepository<T>  where T : BaseEntity
     Guid Add(T entity);
     T Update(T entity);
     void Delete(Guid id);
+    Task <int> SaveChangesAsync(CancellationToken cancellationToken);
     
 }
