@@ -20,10 +20,15 @@ public class AuthController (IMediator mediator , IRepository<AccessToken> repos
 {
     
     [HttpPost("register")]
-    public async Task<ActionResult> Register( RegisterDTO dto)
+    public async Task<ActionResult> Register([FromBody] RegisterDTO dto)
     {
-        var data = await mediator.Send(new RegisterOrchestrator(dto));
-        return data ? Ok() : BadRequest();
+        var result = await mediator.Send(new RegisterOrchestrator(dto));
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result);
+        }
+        
+        return Ok(result);
 
 
     }
@@ -32,7 +37,7 @@ public class AuthController (IMediator mediator , IRepository<AccessToken> repos
     public async Task<RequestResult<string>> Login([FromBody] UserDTO loginDto)
     {
         var data = await mediator.Send(new LoginOrchestrator(loginDto.Email, loginDto.Password));
-        return new RequestResult<string>(IsSuccess: true , Message: "Login successful" , Data: data);
+        return data;
     }
     [ServiceFilter(typeof(AuthFilter))]
     [HttpGet("Auth")]
@@ -41,8 +46,5 @@ public class AuthController (IMediator mediator , IRepository<AccessToken> repos
     {
         return Ok("hello world");
     }
-    
-    
-    
     
 }

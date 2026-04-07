@@ -1,29 +1,30 @@
 using ERPSystem.Application.Features.Auth.Login.Commands;
 using ERPSystem.Application.Features.Auth.Login.Queries;
+using ERPSystem.Application.Helper.models;
 using ERPSystem.Application.Interfaces;
 using MediatR;
 
 namespace ERPSystem.Application.Features.Auth.Login.Orchestrator;
 
-public record LoginOrchestrator (string Email ,string Password) :IRequest<string>;
-public class LoginOrchestratorHandler(IMediator mediator , IAuthService authService) :IRequestHandler<LoginOrchestrator, string>
+public record LoginOrchestrator (string Email ,string Password) : IRequest<RequestResult<string>>;
+public class LoginOrchestratorHandler(
+    IMediator mediator, 
+    IAuthService authService, 
+    IPasswordService passwordService)
+    : IRequestHandler<LoginOrchestrator, RequestResult<string>> 
 {
-    public async Task<string> Handle(LoginOrchestrator request, CancellationToken cancellationToken)
+    public async Task<RequestResult<string>> Handle(LoginOrchestrator request, CancellationToken cancellationToken)
     {
         var user = await mediator.Send(new GetUserByEmailQuery(request.Email), cancellationToken);
 
-        if (user is null)
+        if (user is null || !passwordService.VerifyPassword(request.Password, user.Password))
         {
-            return null;
+            return new RequestResult<string>(null, false, "The email or password is wrong!");
         }
 
-        if (user.Password != request.Password)
-        {
-            return null;
-        }
+        var token = authService.GenerateToken(user.UserId);
+        await mediator.Send(new AccessTokenCommand(token, DateTime.UtcNow.AddDays(1), user.UserId), cancellationToken);
 
-        var token =  authService.GenerateToken(user.UserId);
-        await mediator.Send(new AccessTokenCommand(token , DateTime.UtcNow.AddDays(1), user.UserId));
-        return token;
+        return new RequestResult<string>(token, true, "Login successful");
     }
 }
