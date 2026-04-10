@@ -4,5 +4,5 @@ namespace ERPSystem.Application.Interfaces;
 
 public interface IAuthService
 {
-    string GenerateToken(Guid userId);
+    string GenerateToken(User userId , out string JwtId);
 }

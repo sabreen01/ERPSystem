@@ -1,4 +1,5 @@
 using ERPSystem.API.Filters;
+using ERPSystem.Application.Common;
 using ERPSystem.Application.Features.Auth.Login.DTOs;
 using ERPSystem.Application.Features.Auth.Login.Orchestrator;
 using ERPSystem.Application.Features.Auth.Login.Queries;
@@ -16,35 +17,46 @@ namespace ERPSystem.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController (IMediator mediator , IRepository<AccessToken> repository) : ControllerBase
+public class AuthController (IMediator mediator , IRepository<AccessToken> repository , UserState userState) : BaseController
 {
     
     [HttpPost("register")]
     public async Task<ActionResult> Register([FromBody] RegisterDTO dto)
     {
-        var result = await mediator.Send(new RegisterOrchestrator(dto));
-        if (!result.IsSuccess)
-        {
-            return BadRequest(result);
-        }
+        return HandleResult(await mediator.Send(new RegisterOrchestrator(dto)));
         
-        return Ok(result);
-
-
     }
     
+    
+    
     [HttpPost("login")]
-    public async Task<RequestResult<string>> Login([FromBody] UserDTO loginDto)
+    public async Task<ActionResult> Login([FromBody] UserDTO loginDto)
     {
-        var data = await mediator.Send(new LoginOrchestrator(loginDto.Email, loginDto.Password));
-        return data;
+        return HandleResult(await mediator.Send(new LoginOrchestrator(loginDto.Email, loginDto.Password)));
     }
+    
+    
+    
     [ServiceFilter(typeof(AuthFilter))]
     [HttpGet("Auth")]
    
     public async Task<ActionResult> GetAuth()
     {
-        return Ok("hello world");
+        // var userId = HttpContext.Items["UserId"] as Guid?;
+        var userId = userState.UserId;
+       
+        if (userId == Guid.Empty)
+        {
+            return Unauthorized("no id founded");
+        }
+
+        return Ok(new 
+        { 
+            Message = "welcome ",
+            YourId = userId ,
+            YourEmail = userState.Email,
+        });
     }
     
-}
+    }
+    

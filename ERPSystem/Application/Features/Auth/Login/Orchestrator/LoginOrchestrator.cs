@@ -19,12 +19,15 @@ public class LoginOrchestratorHandler(
 
         if (user is null || !passwordService.VerifyPassword(request.Password, user.Password))
         {
-            return new RequestResult<string>(null, false, "The email or password is wrong!");
+            return RequestResult<string>.Failure("The email or password is wrong!");
         }
 
-        var token = authService.GenerateToken(user.UserId);
-        await mediator.Send(new AccessTokenCommand(token, DateTime.UtcNow.AddDays(1), user.UserId), cancellationToken);
-
-        return new RequestResult<string>(token, true, "Login successful");
+        var token = authService.GenerateToken(user , out string jwtId);
+        await mediator.Send(new AccessTokenCommand(
+            Token: jwtId,
+            UserId: user.Id,
+            ExpiresAt: DateTime.UtcNow.AddDays(1)
+        ),cancellationToken);
+        return RequestResult<string>.Success(token, "Login successful");      return new RequestResult<string>(token, true, "Login successful");
     }
 }

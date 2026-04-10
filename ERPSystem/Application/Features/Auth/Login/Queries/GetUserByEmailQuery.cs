@@ -6,20 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Application.Features.Auth.Login.Queries;
 
-public record GetUserByEmailQuery(string Email) : IRequest<UserDTO?>;
-public class GetUserByEmailQueryHandler(IRepository<User> repository) : IRequestHandler<GetUserByEmailQuery, UserDTO?>
+public record GetUserByEmailQuery(string Email) : IRequest<User>;
+public class GetUserByEmailQueryHandler(IRepository<User> repository) : IRequestHandler<GetUserByEmailQuery, User>
 {
     
-    public async Task<UserDTO?> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
+    public async Task<User?> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
     {
-       return await repository.GetAll(p => p.Email == request.Email)
-           .Select(user => new UserDTO
-           {
-               UserId =  user.Id,
-               Email =  user.Email,
-               Password =  user.Password,
-               
-           }) 
-           .FirstOrDefaultAsync(cancellationToken);
+        return await repository.GetAll(p => p.Email == request.Email)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

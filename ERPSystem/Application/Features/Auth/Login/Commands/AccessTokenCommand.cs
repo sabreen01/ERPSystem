@@ -11,7 +11,7 @@ public class AccessTokenCommandHandler(IRepository<AccessToken> repository) : IR
     {
         var newToken = new AccessToken
         {
-            Token = request.Token,
+            TokenId = request.Token,
             UserId = request.UserId,
             ExpiredAt = request.ExpiresAt
         };

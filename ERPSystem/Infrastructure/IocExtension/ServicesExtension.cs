@@ -1,4 +1,5 @@
 using ERPSystem.API.Filters;
+using ERPSystem.Application.Common;
 using ERPSystem.Application.Interfaces;
 using ERPSystem.Application.Services;
 
@@ -11,7 +12,8 @@ public static class ServicesExtension
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<AuthFilter>();
         services.AddScoped<IPasswordService, PasswordService>();
-        
+        services.AddScoped<UserState>();
+
     }
     
 }

@@ -24,13 +24,14 @@ public class RegisterOrchestratorHandler (IMediator mediator, IPasswordService p
         
         var hashedPassword = passwordService.HashPassword(request.registerDto.Password);
         var command = new RegisterUserCommand(dto with { Password = hashedPassword });
-
         var isCreated = await mediator.Send(command, cancellationToken);
+
         if (!isCreated)
         {
-            return new RequestResult<bool>(Data: false, IsSuccess: false, Message: "There was an error while creating the account.");
+            return RequestResult<bool>.Failure("There was an error while creating the account.");
         }
 
-        return new RequestResult<bool>(Data: true, IsSuccess: true, Message: "Registration successful.");
+        return RequestResult<bool>.Success(true, "Registration successful.");
+        
     }
 }

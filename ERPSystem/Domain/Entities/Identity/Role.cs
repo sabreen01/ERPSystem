@@ -9,4 +9,5 @@ public class Role : BaseEntity
     public string NormalizedName { get; set; }
     
     
+    
 }
