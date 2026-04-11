@@ -30,8 +30,6 @@
     <ItemGroup>
       <Folder Include="Application\Features\Auth\Register\Queries\" />
       <Folder Include="Domain\Entities\HR\" />
-      <Folder Include="Domain\Enums\" />
-      <Folder Include="Infrastructure\Configrations\" />
     </ItemGroup>
 
 </Project>

@@ -55,6 +55,7 @@ public class AuthController (IMediator mediator , IRepository<AccessToken> repos
             Message = "welcome ",
             YourId = userId ,
             YourEmail = userState.Email,
+            YourRole  =  userState.Roles
         });
     }
     

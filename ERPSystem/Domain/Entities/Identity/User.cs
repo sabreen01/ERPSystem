@@ -10,5 +10,6 @@ public class User : BaseEntity
     public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
     public string Password { get; set; }
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     
 }
