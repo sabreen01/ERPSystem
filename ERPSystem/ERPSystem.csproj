@@ -29,7 +29,6 @@
 
     <ItemGroup>
       <Folder Include="Application\Features\Auth\Register\Queries\" />
-      <Folder Include="Domain\Entities\HR\" />
     </ItemGroup>
 
 </Project>

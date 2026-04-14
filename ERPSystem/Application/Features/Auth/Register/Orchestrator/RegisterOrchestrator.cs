@@ -9,7 +9,8 @@ using MediatR;
 namespace ERPSystem.Application.Features.Auth.Register.Queries;
 
 public record RegisterOrchestrator(RegisterDTO registerDto) : IRequest<RequestResult<bool>>;
-public class RegisterOrchestratorHandler (IMediator mediator, IPasswordService passwordService) :IRequestHandler<RegisterOrchestrator,RequestResult<bool>>
+public class RegisterOrchestratorHandler (IMediator mediator, IPasswordService passwordService) 
+    :IRequestHandler<RegisterOrchestrator,RequestResult<bool>>
 {
     public async Task<RequestResult<bool>> Handle(RegisterOrchestrator request, CancellationToken cancellationToken)
     {

@@ -38,17 +38,16 @@ public class Repository<T>(AppDBContext _context) : IRepository<T>
     public T Update(T entity)
     {
        _context.Set<T>().Update(entity);
-       entity.UpdatedAt = DateTime.Now;
        return entity;
     }
 
     public void Delete(Guid id)
     {
         var entity = _context.Set<T>().Find(id);
-        entity.IsDeleted = true;
-        entity.DeletedAt = DateTime.Now;
-        _context.Set<T>().Update(entity);
-     
+        if (entity != null)
+        {
+            _context.Set<T>().Remove(entity);
+        }
     }
 
     public  Task<int> SaveChangesAsync(CancellationToken cancellationToken)
