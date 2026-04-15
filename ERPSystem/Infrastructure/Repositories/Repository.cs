@@ -18,6 +18,12 @@ public class Repository<T>(AppDBContext _context) : IRepository<T>
         }
         return _context.Set<T>();
     }
+    
+    
+    public async Task<T?> GetById(Guid id)
+    {
+        return await _context.Set<T>().FindAsync(id);
+    }
 
     public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null)
     {

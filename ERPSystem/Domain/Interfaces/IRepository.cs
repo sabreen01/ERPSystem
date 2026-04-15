@@ -6,6 +6,7 @@ namespace ERPSystem.Domain.Interfaces;
 public interface IRepository<T>  where T : BaseEntity
 {
     IQueryable<T> GetAll(Expression<Func<T,bool>> predicate = null);
+    Task<T?> GetById(Guid id);
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null);
     Guid Add(T entity);
     T Update(T entity);

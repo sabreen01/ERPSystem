@@ -30,5 +30,17 @@ public class DepartmentsController (IMediator mediator) : BaseController
     {
         return HandleResult(await mediator.Send(new GetDepartmentByIdQuery(id)));
     }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> Update(Guid id, [FromBody] UpdateDepartmentDto dto)
+    {
+        return HandleResult(await mediator.Send(new UpdateDepartmentOrchestrator(id, dto)) );
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        return HandleResult(await mediator.Send(new DeleteDepartmentOrchestrator(id)));
+    }
     
 }
