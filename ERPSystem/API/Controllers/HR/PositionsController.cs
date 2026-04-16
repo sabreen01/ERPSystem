@@ -30,5 +30,17 @@ public class PositionsController  (IMediator mediator) : BaseController
         return HandleResult(await mediator.Send(new GetPositionByIdQuery(id)));
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePositionDto dto)
+    {
+        return HandleResult(await mediator.Send(new UpdatePositionOrchestrator(id,dto)));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        return HandleResult(await mediator.Send(new DeletePositionOrchestrator(id)));
+    }
+
 
 }
