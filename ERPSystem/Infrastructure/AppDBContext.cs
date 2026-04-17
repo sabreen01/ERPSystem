@@ -15,6 +15,7 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
     
     public DbSet<Department>  Departments { get; set; }
     public DbSet<Position>  Positions { get; set; }
+    public DbSet<Branch> Branches { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,6 +26,7 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
         modelBuilder.Entity<UserRole>().HasQueryFilter(ur => !ur.IsDeleted);
         modelBuilder.Entity<Department>().HasQueryFilter(d => !d.IsDeleted);
         modelBuilder.Entity<Position>().HasQueryFilter(p => !p.IsDeleted);
+        modelBuilder.Entity<Branch>().HasQueryFilter(b => !b.IsDeleted);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
     }
     
