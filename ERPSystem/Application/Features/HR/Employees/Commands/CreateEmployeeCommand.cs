@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Application.Features.HR.Employees.Commands;
 
-public record CreateEmployeeCommand(CreateEmployeeDto Data) : IRequest<Guid>;
+public record CreateEmployeeCommand(CreateEmployeeDto Data, Guid UserId) : IRequest<Guid>;
 public class CreateEmployeeCommandHandler(IRepository<Employee> repository, IMediator _mediator) 
     : IRequestHandler<CreateEmployeeCommand, Guid>
 {
@@ -39,7 +39,6 @@ public class CreateEmployeeCommandHandler(IRepository<Employee> repository, IMed
             PersonalEmail = request.Data.PersonalEmail,
             PersonalPhone = request.Data.PersonalPhone,
             Address = request.Data.Address,
-            
             EmployeeNo = newEmployeeNo,
             HireDate = DateTime.SpecifyKind(request.Data.HireDate, DateTimeKind.Utc),
             ContractType = request.Data.ContractType,
@@ -53,8 +52,8 @@ public class CreateEmployeeCommandHandler(IRepository<Employee> repository, IMed
             BankName = request.Data.BankName,
             BankAccountNo = request.Data.BankAccountNo,
             BankIban = request.Data.BankIban,
-            
-            IsActive = true
+            IsActive = true,
+            UserId =  request.UserId,
         };
         
         repository.Add(emp);

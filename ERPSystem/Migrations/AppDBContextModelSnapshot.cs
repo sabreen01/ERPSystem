@@ -244,8 +244,8 @@ namespace ERPSystem.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -264,6 +264,9 @@ namespace ERPSystem.Migrations
                         .IsUnique();
 
                     b.HasIndex("PositionId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employee", "HR");
                 });
@@ -606,11 +609,17 @@ namespace ERPSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ERPSystem.Domain.Entities.Identity.User", "User")
+                        .WithOne()
+                        .HasForeignKey("ERPSystem.Domain.Entities.HR.Employee", "UserId");
+
                     b.Navigation("Branch");
 
                     b.Navigation("Department");
 
                     b.Navigation("Position");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Position", b =>

@@ -9,6 +9,7 @@ public class EmployeeConfiguration: IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
+        builder.ToTable("Employee", "HR");
         builder.ConfigureBaseEntity();
         builder.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
         builder.Property(e => e.LastName).IsRequired().HasMaxLength(100);
@@ -43,6 +44,10 @@ public class EmployeeConfiguration: IEntityTypeConfiguration<Employee>
         builder.HasOne(e => e.Position)
             .WithMany()
             .HasForeignKey(e => e.PositionId);
+
+        builder.HasOne(e => e.User)
+            .WithOne()
+            .HasForeignKey<Employee>(e => e.UserId);
     }
     
 }

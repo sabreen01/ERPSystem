@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using ERPSystem.Domain.Entities.Identity;
 using ERPSystem.Domain.Enums;
 
 namespace ERPSystem.Domain.Entities.HR;
@@ -27,11 +28,11 @@ public class Employee: BaseEntity
     public Guid DepartmentId { get; set; }
     public Department? Department { get; set; }
     public Guid SalaryStructureId { get; set; }
-    
     public decimal BasicSalary { get; set; }
     public string? BankName { get; set; }
     public string? BankAccountNo { get; set; }
     public string? BankIban { get; set; }
-    public string? UserId { get; set; }
+    public Guid? UserId { get; set; }
+    public User? User { get; set; }
     
 }

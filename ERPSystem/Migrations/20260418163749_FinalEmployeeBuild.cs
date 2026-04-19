@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ERPSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddEmployeeTable : Migration
+    public partial class FinalEmployeeBuild : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Employee",
+                schema: "HR",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
@@ -39,7 +40,7 @@ namespace ERPSystem.Migrations
                     BankName = table.Column<string>(type: "text", nullable: true),
                     BankAccountNo = table.Column<string>(type: "text", nullable: true),
                     BankIban = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -72,51 +73,72 @@ namespace ERPSystem.Migrations
                         principalTable: "Position",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employee_User_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Identity",
+                        principalTable: "User",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_BranchId",
+                schema: "HR",
                 table: "Employee",
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_CreatedAt",
+                schema: "HR",
                 table: "Employee",
                 column: "CreatedAt");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_DepartmentId",
+                schema: "HR",
                 table: "Employee",
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_EmployeeNo",
+                schema: "HR",
                 table: "Employee",
                 column: "EmployeeNo",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_IsDeleted",
+                schema: "HR",
                 table: "Employee",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_NationalId",
+                schema: "HR",
                 table: "Employee",
                 column: "NationalId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employee_PositionId",
+                schema: "HR",
                 table: "Employee",
                 column: "PositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_UserId",
+                schema: "HR",
+                table: "Employee",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "Employee",
+                schema: "HR");
         }
     }
 }

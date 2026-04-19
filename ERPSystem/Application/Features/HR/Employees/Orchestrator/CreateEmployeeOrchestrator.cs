@@ -1,3 +1,5 @@
+using ERPSystem.Application.Features.Auth.Register.DTOs;
+using ERPSystem.Application.Features.Auth.Register.Queries;
 using ERPSystem.Application.Features.HR.Employees.Commands;
 using ERPSystem.Application.Features.HR.Employees.DTOs;
 using ERPSystem.Application.Features.HR.Employees.Queries;
@@ -29,11 +31,29 @@ public class CreateEmployeeOrchestratorHandler(IMediator mediator)
         {
             return RequestResult<Guid>.Failure($"Salary must be between {positionResult.Data.MinSalary} and {positionResult.Data.MaxSalary}.");
         }
-        
         var idExists = await mediator.Send(new CheckNationalIdQuery(request.Data.NationalId), ct);
         if (idExists) return RequestResult<Guid>.Failure("National ID already registered.");
+
         
-        var empId = await mediator.Send(new CreateEmployeeCommand(request.Data), ct);
+        var registerDto = new RegisterDTO 
+        {
+            UserName = request.Data.PersonalEmail, 
+            FirstName = request.Data.FirstName,
+            LastName = request.Data.LastName,
+            Email = request.Data.PersonalEmail,
+            Password = "Emp@" + request.Data.NationalId 
+        };
+
+        var registerResult = await mediator.Send(new RegisterOrchestrator(registerDto), ct);
+        if (!registerResult.IsSuccess)
+        {
+            return RequestResult<Guid>.Failure("User creation is failure"+registerResult.Message);
+        }
+        
+        Guid createdUserId = registerResult.Data;
+        
+        
+        var empId = await mediator.Send(new CreateEmployeeCommand(request.Data, createdUserId), ct);
 
         return RequestResult<Guid>.Success(empId, "Employee created successfully.");
         

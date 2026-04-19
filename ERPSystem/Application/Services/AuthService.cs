@@ -16,6 +16,7 @@ public class AuthService (IConfiguration configuration) : IAuthService
         JwtId = Guid.NewGuid().ToString();
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, JwtId),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),

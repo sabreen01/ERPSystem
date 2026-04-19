@@ -42,9 +42,10 @@ public class AuthFilter(IRepository<AccessToken> repository , IConfiguration con
 
         var principal = handler.ValidateToken(jwtTokenRaw, validationParameters, out SecurityToken validatedToken);
         var jwtToken = (JwtSecurityToken)validatedToken;
-
+        var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.NameId)?.Value 
+                          ?? jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var jwtId = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
-
+        
         var roleClaims = jwtToken.Claims
             .Where(c => c.Type == "role" || c.Type == ClaimTypes.Role)
             .Select(c => c.Value)
@@ -60,14 +61,15 @@ public class AuthFilter(IRepository<AccessToken> repository , IConfiguration con
         }
 
         var accessTokenInDb = repository.GetAll(t => t.TokenId == jwtId).FirstOrDefault();
-
+        
         if (accessTokenInDb == null || accessTokenInDb.ExpiredAt < DateTime.UtcNow)
         {
             context.Result = new UnauthorizedResult();
             return;
         }
 
-        userState.UserId = accessTokenInDb.UserId;
+        // userState.UserId = accessTokenInDb.UserId;
+        userState.UserId = Guid.Parse(userIdClaim);
         userState.Email = emailClaim;
         userState.Roles = roleClaims;
 

@@ -6,15 +6,16 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Application.Features.Auth.Register.Commands;
-public record RegisterUserCommand(RegisterDTO RegisterData) : IRequest<bool>;
+
+public record RegisterUserCommand(RegisterDTO RegisterData) : IRequest<Guid>;
 
 public class RegisterUserHandler(
     IRepository<User> userRepository, 
     IRepository<Role> roleRepository, 
     IRepository<UserRole> userRoleRepository) 
-    : IRequestHandler<RegisterUserCommand, bool>
+    : IRequestHandler<RegisterUserCommand, Guid> 
 {
-    public async Task<bool> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var data = request.RegisterData;
 
@@ -29,25 +30,23 @@ public class RegisterUserHandler(
             EmailConfirmed = false
         };
 
-        var managerRoleName = nameof(UserRoles.Manager);
-        var managerRole = await roleRepository.GetAll(r => r.Name == managerRoleName)
+        var RoleName = nameof(UserRoles.Employee);
+        var Role = await roleRepository.GetAll(r => r.Name == RoleName)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (managerRole == null) return false;
+        if (Role == null) return Guid.Empty; 
 
         var userRole = new UserRole
         {
             Id = Guid.NewGuid(),
             UserId = newUser.Id,
-            RoleId = managerRole.Id
+            RoleId = Role.Id
         };
     
-      
         userRepository.Add(newUser);
         userRoleRepository.Add(userRole);
     
         await userRepository.SaveChangesAsync(cancellationToken);
-    
-        return true;
+        return newUser.Id; 
     }
 }
