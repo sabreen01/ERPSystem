@@ -10,10 +10,10 @@ public static class ServicesExtension
     public static void UseService(this IServiceCollection services , IConfiguration configuration)
     {
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IFileService, FileService>();
         services.AddScoped<AuthFilter>();
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<UserState>();
-
     }
     
 }

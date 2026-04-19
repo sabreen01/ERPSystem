@@ -3,13 +3,19 @@ using ERPSystem.Domain.Enums;
 using ERPSystem.Infrastructure;
 using ERPSystem.Infrastructure.IocExtension;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDatabaseExtension(builder.Configuration);
 builder.Services.UseService(builder.Configuration);
 builder.Services.AddMediatR(config => 
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly));
+{
+    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.AddOpenBehavior(typeof(ERPSystem.Application.Common.Behaviors.ValidationBehavior<,>));
+});
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddOpenApi();
 
@@ -42,6 +48,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseRouting();
 

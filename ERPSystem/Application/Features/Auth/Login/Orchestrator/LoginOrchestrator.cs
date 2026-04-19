@@ -36,6 +36,6 @@ public class LoginOrchestratorHandler(
             RoleId: userRoleId,
             ExpiresAt: DateTime.UtcNow.AddDays(1)
         ),cancellationToken);
-        return RequestResult<string>.Success(token, "Login successful");      return new RequestResult<string>(token, true, "Login successful");
+        return RequestResult<string>.Success(token, "Login successful");
     }
 }

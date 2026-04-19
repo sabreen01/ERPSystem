@@ -68,8 +68,13 @@ public class AuthFilter(IRepository<AccessToken> repository , IConfiguration con
             return;
         }
 
-        // userState.UserId = accessTokenInDb.UserId;
-        userState.UserId = Guid.Parse(userIdClaim);
+        if (!Guid.TryParse(userIdClaim, out var parsedUserId))
+        {
+            context.Result = new UnauthorizedResult();
+            return;
+        }
+
+        userState.UserId = parsedUserId;
         userState.Email = emailClaim;
         userState.Roles = roleClaims;
 
