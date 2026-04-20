@@ -3,6 +3,7 @@ using System;
 using ERPSystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260419174652_UpdateAttendanceTable")]
+    partial class UpdateAttendanceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace ERPSystem.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.AttendanceManagment.Attendance", b =>
+            modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Attendance", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -635,7 +638,7 @@ namespace ERPSystem.Migrations
                     b.ToTable("UserRole", "Identity");
                 });
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.AttendanceManagment.Attendance", b =>
+            modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Attendance", b =>
                 {
                     b.HasOne("ERPSystem.Domain.Entities.HR.Employee", "Employee")
                         .WithMany()

@@ -2,6 +2,7 @@ using ERPSystem.Application.Common;
 using ERPSystem.Domain.Entities;
 using ERPSystem.Domain.Entities.HR;
 using ERPSystem.Domain.Entities.Identity;
+using ERPSystem.Domain.Entities.AttendanceManagment;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Infrastructure;
@@ -16,6 +17,9 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
     public DbSet<Department>  Departments { get; set; }
     public DbSet<Position>  Positions { get; set; }
     public DbSet<Branch> Branches { get; set; }
+    
+    public DbSet<Attendance> Attendances { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,6 +31,7 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
         modelBuilder.Entity<Department>().HasQueryFilter(d => !d.IsDeleted);
         modelBuilder.Entity<Position>().HasQueryFilter(p => !p.IsDeleted);
         modelBuilder.Entity<Branch>().HasQueryFilter(b => !b.IsDeleted);
+        modelBuilder.Entity<Attendance>().HasQueryFilter(a => !a.IsDeleted);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
     }
     

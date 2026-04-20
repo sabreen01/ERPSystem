@@ -3,6 +3,7 @@ using System;
 using ERPSystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260419161653_AddAttendanceTable")]
+    partial class AddAttendanceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace ERPSystem.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.AttendanceManagment.Attendance", b =>
+            modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Attendance", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,9 +43,6 @@ namespace ERPSystem.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -55,15 +55,6 @@ namespace ERPSystem.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<double?>("OvertimeHours")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -74,7 +65,7 @@ namespace ERPSystem.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Attendance", "AttendanceManagment");
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Branch", b =>
@@ -635,7 +626,7 @@ namespace ERPSystem.Migrations
                     b.ToTable("UserRole", "Identity");
                 });
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.AttendanceManagment.Attendance", b =>
+            modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Attendance", b =>
                 {
                     b.HasOne("ERPSystem.Domain.Entities.HR.Employee", "Employee")
                         .WithMany()
