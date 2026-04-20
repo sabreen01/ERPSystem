@@ -21,6 +21,11 @@ public class CheckInOrchestratorHandler(IMediator mediator)
             return RequestResult<Guid>.Failure("Employee not found.");
         }
 
+        if (!employeeResult.Data.IsActive)
+        {
+            return RequestResult<Guid>.Failure("Employee is not active and cannot check in.");
+        }
+
        
         var hasCheckedIn = await mediator.Send(new CheckEmployeeAttendanceTodayQuery(request.EmployeeId), cancellationToken);
         if (hasCheckedIn)

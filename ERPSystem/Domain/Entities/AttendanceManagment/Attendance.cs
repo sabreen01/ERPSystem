@@ -16,5 +16,6 @@ public class Attendance : BaseEntity
     public DateTime? CheckOutTime { get; set; }
     
     public double? OvertimeHours { get; set; }
+    public OvertimeStatus OvertimeStatus { get; set; } = OvertimeStatus.None;
     public string? Notes { get; set; }
 }

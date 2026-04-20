@@ -20,6 +20,11 @@ public class CheckOutOrchestratorHandler(IMediator mediator)
             return RequestResult<Guid>.Failure("Employee not found.");
         }
 
+        if (!employeeResult.Data.IsActive)
+        {
+            return RequestResult<Guid>.Failure("Employee is not active and cannot check out.");
+        }
+
        
         var attendanceRecord = await mediator.Send(new GetTodayAttendanceQuery(request.EmployeeId), cancellationToken);
         
@@ -32,15 +37,36 @@ public class CheckOutOrchestratorHandler(IMediator mediator)
         {
             return RequestResult<Guid>.Failure("Employee has already checked out today.");
         }
+        
+        double? overtimeHours = 0;
+        var checkOutTime = DateTime.UtcNow;
+        var overtimeStatus = ERPSystem.Domain.Enums.OvertimeStatus.None;
+        
+        if (attendanceRecord.CheckInTime.HasValue)
+        {
+            var workedTime = checkOutTime - attendanceRecord.CheckInTime.Value;
+            var standardWorkHours = 8.0;
 
-      
-        var success = await mediator.Send(new CheckOutCommand(attendanceRecord.Id), cancellationToken);
+            if (workedTime.TotalHours > standardWorkHours)
+            {
+               
+                overtimeHours = Math.Round(workedTime.TotalHours - standardWorkHours, 2);
+                overtimeStatus = ERPSystem.Domain.Enums.OvertimeStatus.Pending;
+            }
+        }
+
+        
+        var success = await mediator.Send(new CheckOutCommand(attendanceRecord.Id, overtimeHours, overtimeStatus), cancellationToken);
 
         if (!success)
         {
             return RequestResult<Guid>.Failure("An error occurred during check out.");
         }
 
-        return RequestResult<Guid>.Success(attendanceRecord.Id, "Checked out successfully.");
+        string message = overtimeHours > 0 
+            ? $"Checked out successfully. You have {overtimeHours} hours of overtime." 
+            : "Checked out successfully.";
+
+        return RequestResult<Guid>.Success(attendanceRecord.Id, message);
     }
 }

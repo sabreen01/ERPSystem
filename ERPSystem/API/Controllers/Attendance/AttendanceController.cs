@@ -20,4 +20,16 @@ public class AttendanceController(IMediator mediator) : BaseController
     {
         return HandleResult(await mediator.Send(new CheckOutOrchestrator(employeeId)));
     }
+
+    [HttpGet("overtime/pending")]
+    public async Task<IActionResult> GetPendingOvertimes()
+    {
+        return HandleResult(await mediator.Send(new ERPSystem.Application.Features.Attendance.Overtime.Queries.GetPendingOvertimesQuery()));
+    }
+
+    [HttpPost("overtime/review")]
+    public async Task<IActionResult> ReviewOvertime([FromBody] ERPSystem.Application.Features.Attendance.Overtime.Commands.ReviewOvertimeCommand command)
+    {
+        return HandleResult(await mediator.Send(command));
+    }
 }
