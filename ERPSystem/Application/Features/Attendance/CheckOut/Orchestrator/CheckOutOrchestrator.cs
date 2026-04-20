@@ -2,6 +2,7 @@ using ERPSystem.Application.Features.Attendance.CheckOut.Commands;
 using ERPSystem.Application.Features.Attendance.CheckOut.Queries;
 using ERPSystem.Application.Features.HR.Employees.Queries;
 using ERPSystem.Application.Helper.models;
+using ERPSystem.Domain.Enums;
 using MediatR;
 
 namespace ERPSystem.Application.Features.Attendance.CheckOut.Orchestrator;
@@ -51,7 +52,7 @@ public class CheckOutOrchestratorHandler(IMediator mediator)
             {
                
                 overtimeHours = Math.Round(workedTime.TotalHours - standardWorkHours, 2);
-                overtimeStatus = ERPSystem.Domain.Enums.OvertimeStatus.Pending;
+                overtimeStatus = OvertimeStatus.Pending;
             }
         }
 

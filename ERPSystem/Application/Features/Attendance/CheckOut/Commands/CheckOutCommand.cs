@@ -1,9 +1,10 @@
+using ERPSystem.Domain.Enums;
 using ERPSystem.Domain.Interfaces;
 using MediatR;
 using AttendanceEntity = ERPSystem.Domain.Entities.AttendanceManagment.Attendance;
 namespace ERPSystem.Application.Features.Attendance.CheckOut.Commands;
 
-public record CheckOutCommand(Guid AttendanceId, double? OvertimeHours, ERPSystem.Domain.Enums.OvertimeStatus OvertimeStatus) : IRequest<bool>;
+public record CheckOutCommand(Guid AttendanceId, double? OvertimeHours, OvertimeStatus OvertimeStatus) : IRequest<bool>;
 
 public class CheckOutCommandHandler(IRepository<AttendanceEntity> repository) 
     : IRequestHandler<CheckOutCommand, bool>
