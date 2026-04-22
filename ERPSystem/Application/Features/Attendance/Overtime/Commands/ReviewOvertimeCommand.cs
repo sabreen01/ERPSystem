@@ -13,13 +13,13 @@ public class ReviewOvertimeCommandHandler(IRepository<AttendanceEntity> reposito
 {
     public async Task<RequestResult<bool>> Handle(ReviewOvertimeCommand request, CancellationToken cancellationToken)
     {
-        // 1. Validation: only allow Approved or Rejected
+       
         if (request.NewStatus != OvertimeStatus.Approved && request.NewStatus != OvertimeStatus.Rejected)
         {
             return RequestResult<bool>.Failure("Status can only be set to Approved or Rejected.");
         }
 
-        // 2. Fetch record
+       
         var attendance = await repository.GetById(request.AttendanceId);
         
         if (attendance == null)
@@ -32,7 +32,7 @@ public class ReviewOvertimeCommandHandler(IRepository<AttendanceEntity> reposito
             return RequestResult<bool>.Failure($"Cannot review this record. Current status is {attendance.OvertimeStatus}.");
         }
 
-        // 3. Update status
+       
         attendance.OvertimeStatus = request.NewStatus;
         repository.Update(attendance);
         await repository.SaveChangesAsync(cancellationToken);

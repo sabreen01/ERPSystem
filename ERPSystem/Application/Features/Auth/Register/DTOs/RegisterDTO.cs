@@ -1,6 +1,6 @@
 namespace ERPSystem.Application.Features.Auth.Register.DTOs;
 
-public record RegisterDTO
+public record RegisterDto
 {
     public string UserName { get; set; }
     public string FirstName { get; set; }

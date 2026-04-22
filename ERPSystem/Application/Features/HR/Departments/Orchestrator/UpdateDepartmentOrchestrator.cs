@@ -14,8 +14,8 @@ public class UpdateDepartmentOrchestratorHandler(IMediator  mediator)
 {
     public async Task<RequestResult<bool>> Handle(UpdateDepartmentOrchestrator request, CancellationToken cancellationToken)
     {
-        var IsExist = await mediator.Send(new GetDepartmentByIdQuery(request.Id));
-        if (!IsExist.IsSuccess)
+        var isExist = await mediator.Send(new GetDepartmentByIdQuery(request.Id));
+        if (!isExist.IsSuccess)
         {
             return RequestResult<bool>.Failure("Department not found");
         }

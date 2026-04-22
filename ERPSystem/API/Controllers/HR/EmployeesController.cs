@@ -1,3 +1,4 @@
+using ERPSystem.Application.Features.HR.Employees.Commands;
 using ERPSystem.Application.Features.HR.Employees.DTOs;
 using ERPSystem.Application.Features.HR.Employees.Orchestrator;
 using ERPSystem.Application.Features.HR.Employees.Queries;
@@ -38,7 +39,7 @@ public class EmployeesController(IMediator mediator):BaseController
     [HttpPost("{id}/photo")]
     public async Task<IActionResult> UploadPhoto(Guid id, IFormFile photo)
     {
-        return HandleResult(await mediator.Send(new ERPSystem.Application.Features.HR.Employees.Commands.UploadEmployeePhotoCommand(id, photo)));
+        return HandleResult(await mediator.Send(new UploadEmployeePhotoCommand(id, photo)));
     }
 
 }

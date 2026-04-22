@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace ERPSystem.Application.Features.Auth.Register.DTOs;
 
-public class RegisterDTOValidator : AbstractValidator<RegisterDTO>
+public class RegisterDtoValidator : AbstractValidator<RegisterDto>
 {
-    public RegisterDTOValidator()
+    public RegisterDtoValidator()
     {
         RuleFor(x => x.UserName)
             .NotEmpty().WithMessage("UserName is required.")

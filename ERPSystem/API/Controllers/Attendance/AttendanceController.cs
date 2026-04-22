@@ -1,5 +1,7 @@
 using ERPSystem.Application.Features.Attendance.CheckIn.Orchestrator;
 using ERPSystem.Application.Features.Attendance.CheckOut.Orchestrator;
+using ERPSystem.Application.Features.Attendance.Overtime.Commands;
+using ERPSystem.Application.Features.Attendance.Overtime.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,11 +26,11 @@ public class AttendanceController(IMediator mediator) : BaseController
     [HttpGet("overtime/pending")]
     public async Task<IActionResult> GetPendingOvertimes()
     {
-        return HandleResult(await mediator.Send(new ERPSystem.Application.Features.Attendance.Overtime.Queries.GetPendingOvertimesQuery()));
+        return HandleResult(await mediator.Send(new GetPendingOvertimesQuery()));
     }
 
     [HttpPost("overtime/review")]
-    public async Task<IActionResult> ReviewOvertime([FromBody] ERPSystem.Application.Features.Attendance.Overtime.Commands.ReviewOvertimeCommand command)
+    public async Task<IActionResult> ReviewOvertime([FromBody] ReviewOvertimeCommand command)
     {
         return HandleResult(await mediator.Send(command));
     }

@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace ERPSystem.Application.Features.Auth.Login.DTOs;
 
-public class UserDTOValidator : AbstractValidator<UserDTO>
+public class UserDtoValidator : AbstractValidator<UserDto>
 {
-    public UserDTOValidator()
+    public UserDtoValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")

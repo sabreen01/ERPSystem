@@ -8,13 +8,13 @@ using MediatR;
 
 namespace ERPSystem.Application.Features.Auth.Register.Queries;
 
-public record RegisterOrchestrator(RegisterDTO registerDto) : IRequest<RequestResult<Guid>>;
+public record RegisterOrchestrator(RegisterDto RegisterDto) : IRequest<RequestResult<Guid>>;
 public class RegisterOrchestratorHandler (IMediator mediator, IPasswordService passwordService) 
     : IRequestHandler<RegisterOrchestrator, RequestResult<Guid>>
 {
     public async Task<RequestResult<Guid>> Handle(RegisterOrchestrator request, CancellationToken cancellationToken)
     {
-        var dto = request.registerDto;
+        var dto = request.RegisterDto;
 
         var existingUser = await mediator.Send(new GetUserByEmailQuery(dto.Email), cancellationToken);
         if (existingUser != null)

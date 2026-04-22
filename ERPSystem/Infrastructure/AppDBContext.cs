@@ -3,11 +3,12 @@ using ERPSystem.Domain.Entities;
 using ERPSystem.Domain.Entities.HR;
 using ERPSystem.Domain.Entities.Identity;
 using ERPSystem.Domain.Entities.AttendanceManagment;
+using ERPSystem.Domain.Entities.Leaves;
 using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Infrastructure;
 
-public class AppDBContext(DbContextOptions<AppDBContext> options , UserState userState) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options , UserState userState) : DbContext(options)
 {
     public DbSet<User>  Users { get; set; }
     public DbSet<Role>  Roles { get; set; }
@@ -19,6 +20,8 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
     public DbSet<Branch> Branches { get; set; }
     
     public DbSet<Attendance> Attendances { get; set; }
+    
+    public DbSet<LeaveType> LeaveTypes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +35,8 @@ public class AppDBContext(DbContextOptions<AppDBContext> options , UserState use
         modelBuilder.Entity<Position>().HasQueryFilter(p => !p.IsDeleted);
         modelBuilder.Entity<Branch>().HasQueryFilter(b => !b.IsDeleted);
         modelBuilder.Entity<Attendance>().HasQueryFilter(a => !a.IsDeleted);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
+        modelBuilder.Entity<LeaveType>().HasQueryFilter(lt => !lt.IsDeleted);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
     
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

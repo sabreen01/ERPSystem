@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace ERPSystem.Application.Features.HR.Employees.Commands;
 
 public record CreateEmployeeCommand(CreateEmployeeDto Data, Guid UserId) : IRequest<Guid>;
-public class CreateEmployeeCommandHandler(IRepository<Employee> repository, IMediator _mediator) 
+public class CreateEmployeeCommandHandler(IRepository<Employee> repository) 
     : IRequestHandler<CreateEmployeeCommand, Guid>
 {
     public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken ct)
     {
+        //محتاجه inhanceing by computed column in the future
         var year = DateTime.Now.Year;
         var lastEmpNo = await repository.GetAll(e => e.EmployeeNo.Contains($"-{year}-"))
             .OrderByDescending(e => e.EmployeeNo)

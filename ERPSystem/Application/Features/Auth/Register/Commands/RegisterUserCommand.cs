@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ERPSystem.Application.Features.Auth.Register.Commands;
 
-public record RegisterUserCommand(RegisterDTO RegisterData) : IRequest<Guid>;
+public record RegisterUserCommand(RegisterDto RegisterData) : IRequest<Guid>;
 
 public class RegisterUserHandler(
     IRepository<User> userRepository, 
@@ -30,17 +30,17 @@ public class RegisterUserHandler(
             EmailConfirmed = false
         };
 
-        var RoleName = nameof(UserRoles.Employee);
-        var Role = await roleRepository.GetAll(r => r.Name == RoleName)
+        var roleName = nameof(UserRoles.Employee);
+        var role = await roleRepository.GetAll(r => r.Name == roleName)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (Role == null) return Guid.Empty; 
+        if (role == null) return Guid.Empty; 
 
         var userRole = new UserRole
         {
             Id = Guid.NewGuid(),
             UserId = newUser.Id,
-            RoleId = Role.Id
+            RoleId = role.Id
         };
     
         userRepository.Add(newUser);

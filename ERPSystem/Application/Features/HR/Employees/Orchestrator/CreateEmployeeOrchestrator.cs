@@ -35,7 +35,7 @@ public class CreateEmployeeOrchestratorHandler(IMediator mediator)
         if (idExists) return RequestResult<Guid>.Failure("National ID already registered.");
 
         
-        var registerDto = new RegisterDTO 
+        var registerDto = new RegisterDto 
         {
             UserName = request.Data.PersonalEmail, 
             FirstName = request.Data.FirstName,

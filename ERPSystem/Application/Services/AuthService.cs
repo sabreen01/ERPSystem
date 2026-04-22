@@ -11,14 +11,14 @@ namespace ERPSystem.Application.Services;
 public class AuthService (IConfiguration configuration) : IAuthService
 {
 
-    public string GenerateToken(User user, out string JwtId)
+    public string GenerateToken(User user, out string jwtId)
     {
-        JwtId = Guid.NewGuid().ToString();
+        jwtId = Guid.NewGuid().ToString();
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, JwtId),
+            new Claim(JwtRegisteredClaimNames.Jti, jwtId),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
         };
 

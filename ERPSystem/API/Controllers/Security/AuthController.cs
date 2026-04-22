@@ -2,26 +2,22 @@ using ERPSystem.API.Filters;
 using ERPSystem.Application.Common;
 using ERPSystem.Application.Features.Auth.Login.DTOs;
 using ERPSystem.Application.Features.Auth.Login.Orchestrator;
-using ERPSystem.Application.Features.Auth.Login.Queries;
-using ERPSystem.Application.Features.Auth.Register.Commands;
 using ERPSystem.Application.Features.Auth.Register.DTOs;
 using ERPSystem.Application.Features.Auth.Register.Queries;
-using ERPSystem.Application.Helper.models;
 using ERPSystem.Domain.Entities.Identity;
 using ERPSystem.Domain.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ERPSystem.API.Controllers;
+namespace ERPSystem.API.Controllers.Security;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController (IMediator mediator , IRepository<AccessToken> repository , UserState userState) : BaseController
+public class AuthController (IMediator mediator , UserState userState) : BaseController
 {
     
     [HttpPost("register")]
-    public async Task<ActionResult> Register([FromBody] RegisterDTO dto)
+    public async Task<ActionResult> Register([FromBody] RegisterDto dto)
     {
         return HandleResult(await mediator.Send(new RegisterOrchestrator(dto)));
         
@@ -30,7 +26,7 @@ public class AuthController (IMediator mediator , IRepository<AccessToken> repos
     
     
     [HttpPost("login")]
-    public async Task<ActionResult> Login([FromBody] UserDTO loginDto)
+    public async Task<ActionResult> Login([FromBody] UserDto loginDto)
     {
         return HandleResult(await mediator.Send(new LoginOrchestrator(loginDto.Email, loginDto.Password)));
     }
