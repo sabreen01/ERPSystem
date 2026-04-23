@@ -41,7 +41,7 @@ public class CheckOutOrchestratorHandler(IMediator mediator)
         
         double? overtimeHours = 0;
         var checkOutTime = DateTime.UtcNow;
-        var overtimeStatus = ERPSystem.Domain.Enums.OvertimeStatus.None;
+        var overtimeStatus = OvertimeStatus.None;
         
         if (attendanceRecord.CheckInTime.HasValue)
         {

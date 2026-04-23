@@ -42,7 +42,7 @@ public class CheckInOrchestratorHandler(IMediator mediator)
         
         if (localTime > shiftStartTime.Add(gracePeriod))
         {
-            status = ERPSystem.Domain.Enums.AttendanceStatus.Late;
+            status = AttendanceStatus.Late;
         }
 
        
