@@ -11,7 +11,7 @@ namespace ERPSystem.API.Controllers.Leaves;
 [Route("[controller]")]
 public class LeaveTypesController(IMediator mediator) : BaseController
 {
-    [HttpPost("Create")]
+    [HttpPost]
     public async Task<ActionResult> Create([FromBody] CreateLeaveTypeDto dto)
     {
         return HandleResult(await mediator.Send(new CreateLeaveTypeOrchestrator(
@@ -20,13 +20,13 @@ public class LeaveTypesController(IMediator mediator) : BaseController
         )));
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet]
     public async Task<ActionResult> GetAll()
     {
         return HandleResult(await mediator.Send(new GetAllLeaveTypesQuery()));
     }
 
-    [HttpGet("GetById/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetById(Guid id)
     {
         return HandleResult(await mediator.Send(new GetLeaveTypeByIdQuery(id)));

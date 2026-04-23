@@ -4,6 +4,7 @@ using ERPSystem.Application.Features.HR.Employees.Commands;
 using ERPSystem.Application.Features.HR.Employees.DTOs;
 using ERPSystem.Application.Features.HR.Employees.Queries;
 using ERPSystem.Application.Features.HR.Positions.Queries;
+using ERPSystem.Application.Features.Leaves.LeaveBalances.Orchestrator;
 using ERPSystem.Application.Helper.models;
 using MediatR;
 
@@ -54,8 +55,17 @@ public class CreateEmployeeOrchestratorHandler(IMediator mediator)
         
         
         var empId = await mediator.Send(new CreateEmployeeCommand(request.Data, createdUserId), ct);
+        
+        var currentYear = DateTime.UtcNow.Year;
+        var balancesResult = await mediator.Send(new InitializeLeaveBalancesOrchestrator(empId, currentYear), ct);
+        
+        string message = "Employee created successfully.";
+        if (balancesResult.IsSuccess)
+            message += " " + balancesResult.Message;
+        else
+            message += " (Warning: Leave balances could not be initialized: " + balancesResult.Message + ")";
 
-        return RequestResult<Guid>.Success(empId, "Employee created successfully.");
+        return RequestResult<Guid>.Success(empId, message);
         
     }
 }

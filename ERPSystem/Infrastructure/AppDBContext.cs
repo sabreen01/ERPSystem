@@ -22,6 +22,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options , UserState use
     public DbSet<Attendance> Attendances { get; set; }
     
     public DbSet<LeaveType> LeaveTypes { get; set; }
+    
+    public DbSet<LeaveBalance> LeaveBalances { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +38,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options , UserState use
         modelBuilder.Entity<Branch>().HasQueryFilter(b => !b.IsDeleted);
         modelBuilder.Entity<Attendance>().HasQueryFilter(a => !a.IsDeleted);
         modelBuilder.Entity<LeaveType>().HasQueryFilter(lt => !lt.IsDeleted);
+        modelBuilder.Entity<LeaveBalance>().HasQueryFilter(lb => !lb.IsDeleted);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
     
