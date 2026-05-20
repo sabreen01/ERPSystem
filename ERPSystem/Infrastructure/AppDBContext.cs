@@ -24,6 +24,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options , UserState use
     public DbSet<LeaveType> LeaveTypes { get; set; }
     
     public DbSet<LeaveBalance> LeaveBalances { get; set; }
+    
+    public DbSet<LeaveRequest> LeaveRequests { get; set; }
+    public DbSet<PublicHoliday> PublicHolidays { get; set; }
+
+
+    public DbSet<LeaveRequestDay> LeaveRequestDays { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +45,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options , UserState use
         modelBuilder.Entity<Attendance>().HasQueryFilter(a => !a.IsDeleted);
         modelBuilder.Entity<LeaveType>().HasQueryFilter(lt => !lt.IsDeleted);
         modelBuilder.Entity<LeaveBalance>().HasQueryFilter(lb => !lb.IsDeleted);
+        modelBuilder.Entity<LeaveRequest>().HasQueryFilter(lr => !lr.IsDeleted);
+        modelBuilder.Entity<PublicHoliday>().HasQueryFilter(ph => !ph.IsDeleted);
+        modelBuilder.Entity<LeaveRequestDay>().HasQueryFilter(lrd => !lrd.IsDeleted);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
     

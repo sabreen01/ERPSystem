@@ -2,6 +2,8 @@ using ERPSystem.API.Filters;
 using ERPSystem.Application.Common;
 using ERPSystem.Application.Interfaces;
 using ERPSystem.Application.Services;
+using ERPSystem.Application.Helper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ERPSystem.Infrastructure.IocExtension;
 
@@ -14,6 +16,7 @@ public static class ServicesExtension
         services.AddScoped<AuthFilter>();
         services.AddScoped<IPasswordService, PasswordService>();
         services.AddScoped<UserState>();
+        services.AddScoped<ERPSystem.Application.Interfaces.ILeaveCalculatorService, ERPSystem.Application.Services.LeaveCalculatorService>();
     }
     
 }

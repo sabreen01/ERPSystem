@@ -3,6 +3,7 @@ using System;
 using ERPSystem.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ERPSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260425152534_AddLeaveRequest")]
+    partial class AddLeaveRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -761,46 +764,6 @@ namespace ERPSystem.Migrations
                     b.ToTable("LeaveRequest", "Leaves");
                 });
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.Leaves.LeaveRequestDay", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("LeaveRequestId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeaveRequestId");
-
-                    b.ToTable("LeaveRequestDays");
-                });
-
             modelBuilder.Entity("ERPSystem.Domain.Entities.Leaves.LeaveType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -860,48 +823,6 @@ namespace ERPSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LeaveType", "Leaves");
-                });
-
-            modelBuilder.Entity("ERPSystem.Domain.Entities.Leaves.PublicHoliday", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PublicHolidays", "Leaves");
                 });
 
             modelBuilder.Entity("ERPSystem.Domain.Entities.AttendanceManagment.Attendance", b =>
@@ -1044,17 +965,6 @@ namespace ERPSystem.Migrations
                     b.Navigation("LeaveType");
                 });
 
-            modelBuilder.Entity("ERPSystem.Domain.Entities.Leaves.LeaveRequestDay", b =>
-                {
-                    b.HasOne("ERPSystem.Domain.Entities.Leaves.LeaveRequest", "LeaveRequest")
-                        .WithMany("LeaveRequestDays")
-                        .HasForeignKey("LeaveRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LeaveRequest");
-                });
-
             modelBuilder.Entity("ERPSystem.Domain.Entities.HR.Department", b =>
                 {
                     b.Navigation("ChildDepartments");
@@ -1070,11 +980,6 @@ namespace ERPSystem.Migrations
             modelBuilder.Entity("ERPSystem.Domain.Entities.Identity.User", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("ERPSystem.Domain.Entities.Leaves.LeaveRequest", b =>
-                {
-                    b.Navigation("LeaveRequestDays");
                 });
 #pragma warning restore 612, 618
         }
